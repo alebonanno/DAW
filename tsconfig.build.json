@@ -1,7 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  // "documentation" => Al estar dentro de la carpeta backend, nest la considera obetivo de compilación ts.
-  // Al no ser codigo fuente, no esta pensada para interactuar con las librerias y demas y lanza errores.
-  // Entonces "documentation "documentation" excluye la carpeta para que siga funcionando la "app".
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts", "documentation"]
-}
