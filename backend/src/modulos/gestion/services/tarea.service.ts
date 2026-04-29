@@ -52,4 +52,18 @@ export class TareasService {
 
     }
 
+    async obtenerTareasPorProyecto(idProyecto: number) {
+
+        const tareas = await this.tareasRepository.find({
+            where: { idProyecto },
+            order: { id: 'ASC' }
+        });
+
+        return tareas.map(tarea => ({
+            id: tarea.id,
+            descripcion: tarea.descripcion,
+            estado: tarea.estado
+        }));
+    }
+
 }
