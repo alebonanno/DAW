@@ -64,4 +64,12 @@ export class ClientesController {
         return await this.clientesService.obtenerClientes(estado);
     }
 
+    // Extra.
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard)
+    @Get("stats")
+    async obtenerEstadisticas() {
+    return this.clientesService.obtenerEstadisticas();
+    }
+
 }

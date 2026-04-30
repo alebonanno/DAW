@@ -82,4 +82,24 @@ export class ClientesService {
         const existe: boolean = await this.repository.exists({ where: { id, estado: EstadosClientesEnum.ACTIVO } });
         return existe;
     }
+
+
+    // Extra.
+    async obtenerEstadisticas() {
+    const total = await this.repository.count();
+
+    const activos = await this.repository.count({
+        where: { estado: EstadosClientesEnum.ACTIVO }
+    });
+
+    const baja = await this.repository.count({
+        where: { estado: EstadosClientesEnum.BAJA }
+    });
+
+    return {
+        total,
+        activos,
+        baja
+    };
+    }
 }
