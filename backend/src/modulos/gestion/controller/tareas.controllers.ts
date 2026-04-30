@@ -30,7 +30,8 @@ export class TareasController {
     // Endpoint PUT '/proyectos/:idProyecto/tareas/:id'.
     @Put(':id')
     // @Body() dto: UpdateTareaDto => Datos a actualizar.
-    // @Param('id') id: number => ID de la tarea desde la URL.
+    // @Param('id') id: number => ID de la tarea a modificar.
+    // En SWAGGER, pide 'ID' de la tarea, para luego actualizarla.
     async actualizarTarea(@Body() dto: UpdateTareaDto, @Param('id') id: number): Promise<void> {
         // Llama al service para actualizar la tarea.
        await this.tareasService.actualizarTarea(dto, id);
