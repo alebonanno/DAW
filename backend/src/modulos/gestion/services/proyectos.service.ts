@@ -117,4 +117,14 @@ export class ProyectosService {
         return existe;
     }
 
+
+    // Extra3.
+    async contarPorCliente(clienteId: number): Promise<number> {
+    return this.repository.count({
+        where: {
+        cliente: { id: clienteId }
+        }
+    });
+    }
+
 }

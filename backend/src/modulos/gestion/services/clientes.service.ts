@@ -84,7 +84,7 @@ export class ClientesService {
     }
 
 
-    // Extra.
+    // Extra2.
     async obtenerEstadisticas() {
     const total = await this.repository.count();
 
@@ -100,6 +100,26 @@ export class ClientesService {
         total,
         activos,
         baja
+    };
+    }
+
+
+    // Extra3:
+    async contarProyectos(id: number) {
+
+    const existe = await this.repository.exists({
+        where: { id }
+    });
+
+    if (!existe) {
+        throw new BadRequestException("Cliente no encontrado");
+    }
+
+    const total = await this.proyectosService.contarPorCliente(id);
+
+    return {
+        clienteId: id,
+        totalProyectos: total
     };
     }
 }

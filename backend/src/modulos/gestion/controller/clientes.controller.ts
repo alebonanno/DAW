@@ -64,12 +64,21 @@ export class ClientesController {
         return await this.clientesService.obtenerClientes(estado);
     }
 
-    // Extra.
+    // Extra2.
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Get("stats")
     async obtenerEstadisticas() {
-    return this.clientesService.obtenerEstadisticas();
+        return this.clientesService.obtenerEstadisticas();
     }
 
+    
+    // Extra3.
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard)
+    // Pide 'id' del cliente en SWAGGER.
+    @Get(":id/proyectos-count")
+    async contarProyectos(@Param("id") id: number) {
+        return this.clientesService.contarProyectos(id);
+    }
 }
