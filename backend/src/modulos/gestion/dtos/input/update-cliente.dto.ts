@@ -1,5 +1,5 @@
 import { ApiProperty, PartialType } from "@nestjs/swagger";
-import { IsEnum, IsOptional } from "class-validator";
+import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator";
 import { CreateClienteDto } from "./create-cliente.dto";
 import { EstadosClientesEnum } from "../../enums/estados-clientes.enum";
 
@@ -11,5 +11,16 @@ export class UpdateClienteDto extends PartialType(CreateClienteDto) {
     @IsEnum(EstadosClientesEnum)
     @IsOptional()
     estado!: EstadosClientesEnum;
+
+    // Extras.
+    @ApiProperty({ example: "334455", required: false })
+    @IsOptional()
+    @IsString()
+    telefono?: string;
+
+    @ApiProperty({ example: "example@gmail.com", required: false })
+    @IsOptional()
+    @IsEmail()
+    email?: string;
 
 }

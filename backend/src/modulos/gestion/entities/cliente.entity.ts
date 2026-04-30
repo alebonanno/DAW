@@ -11,6 +11,15 @@ export class Cliente {
     @Column()
     nombre!: string;
 
+    // Extra
+    // nullable: true => No todos los clientes tienen telefono o email.
+    @Column({ nullable: true })
+    telefono?: string;
+
+    // Extra
+    @Column({ nullable: true })
+    email?: string;
+
     @Column({ type: 'enum', enum: EstadosClientesEnum })
     estado!: EstadosClientesEnum
 

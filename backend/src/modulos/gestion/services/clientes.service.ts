@@ -49,7 +49,17 @@ export class ClientesService {
             whereCondition.estado = estado
         }
 
-        const clientes: Cliente[] = await this.repository.find({ select: { id: true, nombre: true, estado: true }, order: { id: 'ASC' }, where: whereCondition });
+        const clientes: Cliente[] = await this.repository.find({ 
+            select: { 
+                id: true,
+                nombre: true, 
+                estado: true,
+                // Extras.
+                telefono: true,
+                email: true
+            }, 
+                order: { id: 'ASC' }, 
+                where: whereCondition });
 
         const dtoList: ListClienteDTO[] = [];
 
@@ -58,6 +68,9 @@ export class ClientesService {
             dto.id = c.id;
             dto.nombre = c.nombre;
             dto.estado = c.estado;
+            // Extras.
+            dto.telefono = c.telefono;
+            dto.email = c.email;
             dtoList.push(dto);
         }
 
