@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { EstadosClientesEnum } from "../enums/estados-clientes.enum";
 import { Proyecto } from "./proyecto.entity";
 
@@ -25,5 +25,11 @@ export class Cliente {
 
     @OneToMany(() => Proyecto, (proyecto) => proyecto.cliente)
     proyectos!: Proyecto[]
+
+    //Extra4
+    @CreateDateColumn()
+    // Fecha automática en la que se crea el cliente en la base de datos.
+    // Se usa para filtrar clientes por rango de fechas (desde / hasta).
+    createdAt!: Date;
 
 }

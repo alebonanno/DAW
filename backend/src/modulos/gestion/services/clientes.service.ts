@@ -41,25 +41,77 @@ export class ClientesService {
         await this.repository.save(cliente);
     }
 
-    async obtenerClientes(estado: EstadosClientesEnum): Promise<ListClienteDTO[]> {
+    async obtenerClientes(
+        estado: EstadosClientesEnum,
+        // Extra4.
+        desde?: string,
+        hasta?: string,
+
+    ): Promise<ListClienteDTO[]> {
 
         const whereCondition: FindOptionsWhere<ListClienteDTO> = {}
 
-        if (estado){
+        if (estado) {
             whereCondition.estado = estado
         }
 
-        const clientes: Cliente[] = await this.repository.find({ 
-            select: { 
-                id: true,
-                nombre: true, 
-                estado: true,
-                // Extras.
-                telefono: true,
-                email: true
-            }, 
-                order: { id: 'ASC' }, 
-                where: whereCondition });
+        // Extra4.
+        const query = this.repository.createQueryBuilder('cliente');
+
+        query.select([
+            'cliente.id',
+            'cliente.nombre',
+            'cliente.estado',
+            'cliente.telefono',
+            'cliente.email',
+            // Extra4
+            'cliente.createdAt'
+        ]);
+
+        if (estado) {
+            query.andWhere('cliente.estado = :estado', { estado });
+        }
+
+        // Extra4
+        // Función que “limpia” los valores que vienen de Swagger
+        // si v tiene texto válido → lo deja igual.
+        const clean = (v?: string) =>
+            // si viene vacío " " o "" → lo convierte en undefined.
+            v && v.trim() !== '' ? v : undefined;
+
+        // Aplica 'limpieza' al parámetro "desde".
+        // Ej: "2026-04-30" =>  se queda igual.
+        // Ej: "" o " " =>  pasa a undefined.
+        const desdeClean = clean(desde);
+        // Igual para "hasta".
+        const hastaClean = clean(hasta);
+
+        // Si "desdeClean" tiene una fecha válida.
+        if (desdeClean) {
+            // Se agrega una condición al query:
+            // "traer clientes cuya fecha de creación sea MAYOR O IGUAL a 'desde'".
+            query.andWhere('cliente.createdAt >= :desde', {
+                // Convierte string a Date real.
+                desde: new Date(desdeClean)
+            });
+        }
+
+        // Si "hastaClean" tiene una fecha válida.
+        if (hastaClean) {
+            // Cream una fecha a partir del string.
+            const hastaDate = new Date(hastaClean);
+            // Le pone hora final del día:
+            // 23:59:59.999 => para incluir TODO el día completo.
+            hastaDate.setHours(23, 59, 59, 999);
+
+            // Se agrega condición:
+            // "traer clientes cuya fecha de creación sea MENOR O IGUAL a 'hasta'".
+            query.andWhere('cliente.createdAt <= :hasta', {
+                hasta: hastaDate
+            });
+        }
+
+        const clientes = await query.orderBy('cliente.id', 'ASC').getMany();
 
         const dtoList: ListClienteDTO[] = [];
 
@@ -71,6 +123,7 @@ export class ClientesService {
             // Extras.
             dto.telefono = c.telefono;
             dto.email = c.email;
+            dto.createdAt = c.createdAt;
             dtoList.push(dto);
         }
 
@@ -86,40 +139,40 @@ export class ClientesService {
 
     // Extra2.
     async obtenerEstadisticas() {
-    const total = await this.repository.count();
+        const total = await this.repository.count();
 
-    const activos = await this.repository.count({
-        where: { estado: EstadosClientesEnum.ACTIVO }
-    });
+        const activos = await this.repository.count({
+            where: { estado: EstadosClientesEnum.ACTIVO }
+        });
 
-    const baja = await this.repository.count({
-        where: { estado: EstadosClientesEnum.BAJA }
-    });
+        const baja = await this.repository.count({
+            where: { estado: EstadosClientesEnum.BAJA }
+        });
 
-    return {
-        total,
-        activos,
-        baja
-    };
+        return {
+            total,
+            activos,
+            baja
+        };
     }
 
 
     // Extra3:
     async contarProyectos(id: number) {
 
-    const existe = await this.repository.exists({
-        where: { id }
-    });
+        const existe = await this.repository.exists({
+            where: { id }
+        });
 
-    if (!existe) {
-        throw new BadRequestException("Cliente no encontrado");
-    }
+        if (!existe) {
+            throw new BadRequestException("Cliente no encontrado");
+        }
 
-    const total = await this.proyectosService.contarPorCliente(id);
+        const total = await this.proyectosService.contarPorCliente(id);
 
-    return {
-        clienteId: id,
-        totalProyectos: total
-    };
+        return {
+            clienteId: id,
+            totalProyectos: total
+        };
     }
 }

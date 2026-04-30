@@ -56,12 +56,21 @@ export class ClientesController {
 
     // Aplica protección con guard.
     @UseGuards(AuthGuard)
+    // Para evitar que requiera filtro (desde - hasta).
+    // Los examples hacen que se llene automatico en SWAGGER, si se borran en SWAGGER funciona sin filtros.
+    @ApiQuery({ name: 'desde', required: false, type: String, example: '2026-04-01'})
+    @ApiQuery({ name: 'hasta', required: false, type: String, example: '2026-04-30' })
     // Define un endpoint HTTP GET para obtener clientes.
     @Get()
     // @Query("estado") estado: EstadosClientesEnum) => Obtiene el parámetro de query "estado" (ej: ?estado=ACTIVO)
-    async obtenerClientes(@Query("estado") estado: EstadosClientesEnum): Promise<ListClienteDTO[]> {
+    async obtenerClientes(
+        @Query("estado") estado: EstadosClientesEnum,
+        // Extra4.
+        @Query("desde") desde?: string,
+        @Query("hasta") hasta?: string
+    ): Promise<ListClienteDTO[]> {
         // Llama al servicio para obtener clientes filtrados (o todos si no se envía estado).
-        return await this.clientesService.obtenerClientes(estado);
+        return await this.clientesService.obtenerClientes(estado, desde, hasta);
     }
 
     // Extra2.
