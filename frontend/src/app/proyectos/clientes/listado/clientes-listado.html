@@ -1,28 +1,53 @@
-<p-dialog header="Clientes" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }">
-    <p-button id="boton-crear-cliente" icon="pi pi-plus" label="Crear Cliente" (click)="crearCliente()"></p-button>
-    <p-table id="tabla" [value]="clientes()" [scrollable]="true"
+<div class="card p-6">
+    <!-- Muestra titulo y el botón de crear clientes. -->
+    <div class="flex justify-content-between align-items-center mb-4">
+        <h2 class="m-0 text-2xl font-bold">Gestión de Clientes</h2>
+        <p-button 
+            id="boton-crear-cliente" 
+            icon="pi pi-plus" 
+            label="Crear Cliente" 
+            (click)="crearCliente()">
+        </p-button>
+    </div>
+
+    <!-- Tabla de PrimeNG. -->
+    <p-table 
+        id="tabla" 
+        [value]="clientes()" 
+        [scrollable]="true"
         scrollHeight="70vh">
-        <ng-template #header>
+        
+        <!-- Define los nombres de las columnas. -->
+        <ng-template pTemplate="header">
             <tr>
                 <th>Nombre</th>
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
         </ng-template>
-        <ng-template #body let-cliente>
+        
+        <ng-template pTemplate="body" let-cliente>
             <tr>
                 <td>{{ cliente.nombre }}</td>
                 <td>{{ cliente.estado }}</td>
                 <td>
-                    <p-button icon="pi pi-pencil" pTooltip="Editar Cliente" (click)="editarCliente(cliente)"></p-button>
+                    <p-button 
+                        icon="pi pi-pencil" 
+                        pTooltip="Editar Cliente" 
+                        (click)="editarCliente(cliente)">
+                    </p-button>
                 </td>
             </tr>
         </ng-template>
-        <ng-template #emptymessage>
+        
+        <!-- Si la base esta vacia, muestra un mensaje en un renglón. -->
+        <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="4">No se encontraron clientes.</td>
+                <td colspan="3">No se encontraron clientes.</td>
             </tr>
         </ng-template>
     </p-table>
-</p-dialog>
+</div>
+
+<!-- Ventana flotante para Crear/Editar. -->
 <app-gestion-cliente [(visible)]="dialogVisible" [(clienteSeleccionado)]="clienteSeleccionado"></app-gestion-cliente>

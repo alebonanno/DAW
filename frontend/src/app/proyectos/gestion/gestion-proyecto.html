@@ -25,5 +25,9 @@
 
         </div>
     </form>
+    <!-- Muestra la lista de clientes SOLO si tocamos el botón "Gestionar Clientes". -->
+    <!-- Evita que cuando se edita un proyecto, no apoarezca el CRUD de "clientes". -->
+    @if (dialogClientesVisible()) {
+        <app-clientes-listado [(visible)]="dialogClientesVisible"></app-clientes-listado>
+    }
 </p-dialog>
-<app-clientes-listado [(visible)]="dialogClientesVisible"></app-clientes-listado>
