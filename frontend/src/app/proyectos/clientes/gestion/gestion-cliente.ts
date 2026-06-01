@@ -40,7 +40,9 @@ export class GestionCliente {
 
     readonly form: FormGroup = new FormGroup({
         nombre: new FormControl("", [Validators.required]),
-        estado: new FormControl(null)
+        estado: new FormControl(null),
+        telefono: new FormControl(null),
+        email: new FormControl(null)
     });
 
     constructor() {
@@ -48,7 +50,9 @@ export class GestionCliente {
             if (this.clienteSeleccionado()) {
                 this.form.patchValue({
                     nombre: this.clienteSeleccionado()?.nombre,
-                    estado: this.clienteSeleccionado()?.estado
+                    estado: this.clienteSeleccionado()?.estado,
+                    telefono: this.clienteSeleccionado()?.telefono,
+                    email: this.clienteSeleccionado()?.email
                 });
             }
             else {
@@ -81,7 +85,9 @@ export class GestionCliente {
         if (this.clienteSeleccionado()) {
             const dto: UpdateClienteDto = {
                 nombre: formRawValue.nombre,
-                estado: formRawValue.estado
+                estado: formRawValue.estado,
+                telefono: formRawValue.telefono,
+                email: formRawValue.email
             };
             this.gestionClienteApiClient.actualizarCliente(this.clienteSeleccionado()?.id!, dto).subscribe({
                 next: () => {
@@ -101,7 +107,9 @@ export class GestionCliente {
             });
         } else {
             const dto: CreateClienteDTO = {
-                nombre: formRawValue.nombre
+                nombre: formRawValue.nombre,
+                telefono: formRawValue.telefono,
+                email: formRawValue.email
             };
             this.gestionClienteApiClient.crearCliente(dto).subscribe({
                 next: () => {

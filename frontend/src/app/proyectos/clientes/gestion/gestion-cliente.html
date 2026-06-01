@@ -5,6 +5,10 @@
         <div id="contenedor-formulario">
 
             <input pInputText type="text" id="nombre" placeholder="Nombre" formControlName="nombre" />
+            <input pInputText type="text" id="telefono" placeholder="Telefono" formControlName="telefono" />
+            <br>
+            <input pInputText type="text" id="email" placeholder="Email" formControlName="email" />
+            <br>
 
             @if (clienteSeleccionado()) {
             <p-select id="estado" formControlName="estado" [options]="estados()" placeholder="Estado" appendTo="body" />
