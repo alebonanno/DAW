@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  gap: 20px;
+  margin: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 220px;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* efecto hover */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+}
+
+/* títulos */
+.card h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* números grandes */
+.card p {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* colores */
+.total {
+  background: linear-gradient(135deg, #3498db, #5dade2);
+}
+
+.activos {
+  background: linear-gradient(135deg, #2ecc71, #58d68d);
+}
+
+.baja {
+  background: linear-gradient(135deg, #e74c3c, #ec7063);
+}

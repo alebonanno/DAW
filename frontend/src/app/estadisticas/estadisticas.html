@@ -1,0 +1,24 @@
+<app-template>
+  
+  <h1>ESTADISTICAS</h1>
+
+    <div *ngIf="estadisticas">
+
+      <div class="card total">
+        <h3>Total clientes</h3>
+        <p>{{ estadisticas.total }}</p>
+      </div>
+
+      <div class="card activos">
+        <h3>Activos</h3>
+        <p>{{ estadisticas.activos }}</p>
+      </div>
+
+      <div class="card baja">
+        <h3>Baja</h3>
+        <p>{{ estadisticas.baja }}</p>
+      </div>
+
+  </div>
+  
+</app-template>

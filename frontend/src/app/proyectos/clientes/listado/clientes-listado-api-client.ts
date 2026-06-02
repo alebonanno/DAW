@@ -22,4 +22,8 @@ export class ClientesListadoApiClient {
         return this.httpClient.get<ListClienteDTO[]>(path);
     }
 
+    // Extra2
+    getEstadisticas() {
+        return this.httpClient.get<any>('/api/v1/clientes/stats');
+    }
 }

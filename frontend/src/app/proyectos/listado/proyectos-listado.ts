@@ -7,6 +7,7 @@ import { ButtonModule } from "primeng/button";
 import { Template } from "../../template/template";
 import { TooltipModule } from 'primeng/tooltip';
 import { GestionProyecto } from "../gestion/gestion-proyecto";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-proyectos-listado",
@@ -19,6 +20,8 @@ export class ProyectosListado implements OnInit {
   private readonly messageService: MessageService = inject(MessageService);
 
   private readonly proyectosListadoApiClient: ProyectosListadoApiClient = inject(ProyectosListadoApiClient);
+
+  private readonly router = inject(Router);
 
   proyectos: WritableSignal<ListProyectoDTO[]> = signal([]);
 
@@ -47,6 +50,11 @@ export class ProyectosListado implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al obtener los proyectos' });
       }
     });
+  }
+
+  // Extra2
+  abrirEstadisticas() {
+    this.router.navigate(['/estadisticas']);
   }
 
   crearProyecto(): void {
