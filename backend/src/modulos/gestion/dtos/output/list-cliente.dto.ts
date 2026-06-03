@@ -22,4 +22,6 @@ export class ListClienteDTO {
     @ApiProperty({ example: "2026-04-30T13:51:52.728Z" })
     createdAt?: Date;
 
+    // Extra 3
+    totalProyectos?: number;
 }

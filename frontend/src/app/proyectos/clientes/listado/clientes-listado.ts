@@ -42,6 +42,7 @@ export class ClientesListado implements OnInit {
   refrescarClientes(): void {
     this.clientesListadoApiClient.buscarClientes().subscribe({
       next: (data) => {
+        console.log(this.clientes());
         this.clientes.set(data);
       },
       error: (error) => {

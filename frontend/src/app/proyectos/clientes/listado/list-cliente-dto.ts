@@ -4,4 +4,5 @@ export interface ListClienteDTO {
     estado: string;
     telefono?: string;
     email?: string;
+    totalProyectos: number;
 }

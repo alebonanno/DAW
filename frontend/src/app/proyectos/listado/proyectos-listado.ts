@@ -63,7 +63,7 @@ export class ProyectosListado implements OnInit {
 
   editarProyecto(proyecto: ListProyectoDTO): void {
     this.dialogVisible.set(true);
-    this.proyectoSeleccionado.set(proyecto);
+    this.proyectoSeleccionado.set({ ...proyecto });
   }
 
   gestionarTareas(proyecto: ListProyectoDTO): void {

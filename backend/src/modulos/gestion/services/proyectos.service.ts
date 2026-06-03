@@ -13,6 +13,7 @@ import { ListClienteDTO } from "../dtos/output/list-cliente.dto";
 
 @Injectable()
 export class ProyectosService {
+    proyectosService: any;
 
     constructor(@InjectRepository(Proyecto) private readonly repository: Repository<Proyecto>,
         @Inject(forwardRef(() => ClientesService)) private readonly clientesService: ClientesService) { }
@@ -37,24 +38,42 @@ export class ProyectosService {
 
     async actualizarProyecto(id: number, dto: UpdateProyectoDto): Promise<void> {
 
-        const proyecto: Proyecto | null = await this.repository.findOne({ where: { id }, relations: ['cliente'] });
+        // Busca el proyecto en la base de datos por su ID.
+        const proyecto = await this.repository.findOne({
+            where: { id }
+        });
 
+        // Si no existe, lanza un error.
         if (!proyecto) {
             throw new BadRequestException('Proyecto no encontrado');
         }
 
-        if (dto.idCliente) {
-
-            const clienteActivo: boolean = await this.clientesService.existeClienteActivoPorId(dto.idCliente);
-
-            if (!clienteActivo) {
-                throw new BadRequestException('Se debe especificar un cliente activo para el proyecto');
-            }
-
+        // Si viene un nuevo nombre, lo actualiza.
+        if (dto.nombre !== undefined) {
+            proyecto.nombre = dto.nombre;
         }
 
-        this.repository.merge(proyecto, dto);
+        // Si viene un nuevo estado, lo actualiza.
+        if (dto.estado !== undefined) {
+            proyecto.estado = dto.estado;
+        }
 
+        // Si viene un nuevo cliente.
+        if (dto.idCliente !== undefined && dto.idCliente !== null) {
+
+            // Verifica que el cliente exista y esté activo.
+            const clienteActivo = await this.clientesService.existeClienteActivoPorId(dto.idCliente);
+
+            // Si no es válido, lanza error.
+            if (!clienteActivo) {
+                throw new BadRequestException('Cliente inválido');
+            }
+
+            // Actualiza la clave foránea del proyecto (cliente asociado).
+            proyecto.idCliente = dto.idCliente;
+        }
+
+        // Guarda todos los cambios en la base de datos.
         await this.repository.save(proyecto);
     }
 
@@ -74,6 +93,9 @@ export class ProyectosService {
                 dto.cliente.id = p.cliente.id
                 dto.cliente.nombre = p.cliente.nombre;
                 dto.cliente.estado = p.cliente.estado
+
+                dto.cliente.totalProyectos =
+                    await this.contarPorCliente(p.cliente.id);
             }
             dtoList.push(dto);
         }

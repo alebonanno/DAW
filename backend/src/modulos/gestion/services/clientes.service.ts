@@ -124,6 +124,12 @@ export class ClientesService {
             dto.telefono = c.telefono;
             dto.email = c.email;
             dto.createdAt = c.createdAt;
+
+            // Extra3
+            const total = await this.proyectosService.contarPorCliente(c.id);
+
+            dto.totalProyectos = total;
+
             dtoList.push(dto);
         }
 
