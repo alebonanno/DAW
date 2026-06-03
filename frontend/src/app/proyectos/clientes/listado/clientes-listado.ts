@@ -1,4 +1,5 @@
 import { Component, effect, inject, model, ModelSignal, OnInit, signal, WritableSignal } from "@angular/core";
+import { FormsModule } from '@angular/forms';
 import { MessageService } from "primeng/api";
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from "primeng/button";
@@ -11,7 +12,7 @@ import { GestionCliente } from "../gestion/gestion-cliente";
   selector: "app-clientes-listado",
   templateUrl: "./clientes-listado.html",
   styleUrls: ["./clientes-listado.css"],
-  imports: [TableModule, ButtonModule, DialogModule, GestionCliente]
+  imports: [TableModule, ButtonModule, DialogModule, GestionCliente, FormsModule]
 })
 export class ClientesListado implements OnInit {
 
@@ -27,6 +28,10 @@ export class ClientesListado implements OnInit {
 
   clienteSeleccionado: WritableSignal<ListClienteDTO | null> = signal<ListClienteDTO | null>(null);
 
+  //  extra4.
+  desde: string | null = null;
+  hasta: string | null = null;
+
   constructor() {
     effect(() => {
       if (!this.dialogVisible()) {
@@ -40,7 +45,11 @@ export class ClientesListado implements OnInit {
   }
 
   refrescarClientes(): void {
-    this.clientesListadoApiClient.buscarClientes().subscribe({
+    this.clientesListadoApiClient.buscarClientes(
+      undefined,
+      this.desde ?? undefined,
+      this.hasta ?? undefined
+    ).subscribe({
       next: (data) => {
         console.log(this.clientes());
         this.clientes.set(data);

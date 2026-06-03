@@ -1,3 +1,10 @@
 #tabla{
     margin-top: 1rem;
 }   
+
+.filtros {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 1rem;
+}

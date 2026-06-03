@@ -10,6 +10,16 @@
         </p-button>
     </div>
 
+    <!-- Extra4 -->
+     <div class="filtros mb-3">
+
+        <input type="date" [(ngModel)]="desde">
+        <input type="date" [(ngModel)]="hasta">
+
+        <p-button label="Filtrar" (click)="refrescarClientes()"></p-button>
+
+    </div>
+
     <!-- Tabla de PrimeNG. -->
     <p-table 
         id="tabla" 
